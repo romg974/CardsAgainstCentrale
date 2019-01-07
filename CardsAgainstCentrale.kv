@@ -1,0 +1,75 @@
+<LoginScreen>:
+    f_username: username
+    FloatLayout:
+        GridLayout:
+            size_hint: 0.5, 0.25
+            pos_hint: {'x': .25, 'y': .25}
+            rows: 2
+            cols: 2
+            padding: 10
+            spacing: 10
+            Label:
+                text: 'Nom : '
+            TextInput:
+                id: username
+            Label:
+                text: root.message
+            Button:
+                text: 'Connexion'
+                on_press: root.submit()
+
+<LobbyScreen>:
+    w_grid: grille
+    GridLayout:
+        id: grille
+        cols: 2
+        spacing: 10
+        padding: 5
+        Label:
+            text: 'Liste des parties'
+        Label:
+            text: 'Cliquez sur une partie pour la rejoindre. '
+
+<PlayScreen>
+    w_cards: box_cards
+    w_players: box_players
+    w_title: lbl_title
+    FloatLayout:
+        BoxLayout:
+            size_hint: 1, 0.4
+            id: box_cards
+        BoxLayout:
+            id: box_players
+            size_hint: 0.2, 0.6
+            pos_hint: {'x': 0, 'y': .4}
+        Button:
+            id: btn_pass
+            size_hint: 0.8, 0.1
+            pos_hint: {'x': .2, 'y': .4}
+            text: 'Passer le tour'
+        Label:
+            id: lbl_title
+            size_hint: 0.8, 0.1
+            pos_hint: {'x': .2, 'y': .9}
+
+<Manager>:
+    id: screen_manager
+
+    screen_login: screen_login
+    screen_lobby: screen_lobby
+    screen_play: screen_play
+
+    LoginScreen:
+        id: screen_login
+        name: "login"
+        manager: screen_manager
+
+    LobbyScreen:
+        id: screen_lobby
+        name: "lobby"
+        manager: screen_manager
+
+    PlayScreen:
+        id: screen_play
+        name: "play"
+        manager: screen_manager
