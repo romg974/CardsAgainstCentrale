@@ -9,6 +9,7 @@ import PlayScreen
 
 from GameManager import GameManager
 
+# Screen manager, used to manage screen switchs
 class Manager(ScreenManager):
 
     def __init__(self, **kwargs):
@@ -26,6 +27,7 @@ class CardsAgainstCentraleApp(App):
     def __init__(self, **kwargs):
         super(CardsAgainstCentraleApp, self).__init__()
 
+        # Game manager handling game logic
         self.gm = kwargs['gm']
 
     def build(self):

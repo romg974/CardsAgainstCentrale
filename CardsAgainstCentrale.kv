@@ -20,15 +20,20 @@
 
 <LobbyScreen>:
     w_grid: grille
-    GridLayout:
-        id: grille
-        cols: 2
-        spacing: 10
-        padding: 5
+    FloatLayout:
+        BoxLayout:
+            id: grille
+            orientation: 'vertical'
+            size_hint: 1, 0.9
         Label:
-            text: 'Liste des parties'
-        Label:
-            text: 'Cliquez sur une partie pour la rejoindre. '
+            size_hint: 0.7, 0.1
+            pos_hint: {'x': 0, 'y': .9}
+            text: '[b]Liste des parties[/b]\n[i]Cliquez sur une partie pour la rejoindre[/i]'
+            markup: 1
+        Button:
+            size_hint: 0.3, 0.1
+            pos_hint: {'x': 0.7, 'y': .9}
+            text: 'Ajouter une partie'
 
 <PlayScreen>
     w_cards: box_cards
