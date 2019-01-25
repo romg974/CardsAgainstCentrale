@@ -3,9 +3,9 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, FadeTransition
 from kivy.properties import ObjectProperty
 
-import LoginScreen
-import LobbyScreen
-import PlayScreen
+from LoginScreen import *
+from LobbyScreen import *
+from PlayScreen import *
 
 from GameManager import GameManager
 
@@ -16,6 +16,10 @@ class Manager(ScreenManager):
         super(Manager, self).__init__()
 
         self.gm = kwargs['gm']
+
+        self.add_widget(LoginScreen(name='login'))
+        self.add_widget(LobbyScreen(name='lobby'))
+        self.add_widget(PlayScreen(name='play'))
 
     screen_login = ObjectProperty(None)
     screen_lobby = ObjectProperty(None)
@@ -36,4 +40,6 @@ class CardsAgainstCentraleApp(App):
 
 
 if __name__ == '__main__':
-    CardsAgainstCentraleApp(gm=GameManager()).run()
+    gm = GameManager()
+    gm.start()
+    CardsAgainstCentraleApp(gm=gm).run()
