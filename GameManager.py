@@ -43,6 +43,7 @@ class GameManager(threading.Thread):
             return False
 
     def perform_calls(self):
+        actiondebut = self.action
         if self.action == self.ACTION_PING:
             self.callback(self.request())
         elif self.action == self.ACTION_LOGIN:
@@ -61,8 +62,18 @@ class GameManager(threading.Thread):
                 self.callback(True, result['games'])
             else:
                 self.callback(False)
+        elif self.action == self.ACTION_CREATE:
+            result = self.request('create', {'name': self.partie})
+            if result != False:
+                if result['ok']:
+                    self.callback(True)
+                else:
+                    self.callback(False, result['message'])
+            else:
+                self.callback(False)
 
-        self.action = None
+        if actiondebut == self.action:
+            self.action = None
 
     def ping(self, callback):
         self.callback = callback
@@ -79,4 +90,15 @@ class GameManager(threading.Thread):
 
     def createGame(self, callback, name):
         self.callback = callback
+        self.partie = name
         self.action = self.ACTION_CREATE
+
+    def joinGame(self, callback, name):
+        self.callback = callback
+        self.partie = name
+        self.action = self.ACTION_JOIN
+
+    def game(self, callback):
+        self.callback = callback
+        self.action = self.ACTION_GAME
+

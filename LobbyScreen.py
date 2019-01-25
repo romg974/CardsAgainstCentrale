@@ -42,19 +42,23 @@ class LobbyScreen(Screen):
         self.manager.gm.partie = btn.text
         self.manager.current = 'play'
 
-    def add_game_callback(self, ok):
-        pass
+    def add_game_callback(self, ok, message=''):
+        if ok:
+            self.fetch_games()
 
     def add_game_action(self, e=None):
         name = self.add_game_input.text
-        self.manager.gm.createGame(name)
+        self.manager.gm.createGame(self.add_game_callback, name)
 
     def add_game(self, e=None):
+        def add_game(e):
+            popup.dismiss()
+            self.add_game_action()
         playout = BoxLayout(orientation='vertical', padding=10)
         playout.add_widget(Label(text='Nom de la partie : '))
         self.add_game_input = TextInput()
         playout.add_widget(self.add_game_input)
-        playout.add_widget(Button(text='Créer la partie', on_press=self.add_game_action))
+        playout.add_widget(Button(text='Créer la partie', on_press=add_game))
 
         popup = Popup(title='Créer une nouvelle partie',
                       content=playout,
@@ -81,6 +85,10 @@ class LobbyScreen(Screen):
                               content=playout,
                               size_hint=(None, None), size=(400, 400))
                 popup.open()
+            else:
+                self.grid.clear_widgets()
+                for g in self.games:
+                    self.grid.add_widget(Button(text=g['name'], on_press=self.join_game))
         else:
             popup = Popup(title='Erreur !',
                           content=Label(text='Echec de la récuperation des données.'),
@@ -89,9 +97,6 @@ class LobbyScreen(Screen):
 
     def fetch_games(self, e=None):
         self.manager.gm.lobby(self.callback)
-        self.grid.clear_widgets()
-        for g in self.games:
-            self.grid.add_widget(Button(text=g, on_press=self.join_game))
 
     def on_enter(self):
         self.fetch_games()
