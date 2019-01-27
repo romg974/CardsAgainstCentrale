@@ -6,6 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+from kivy.uix.image import Image
 
 class LobbyScreen(Screen):
     games = []
@@ -14,6 +15,7 @@ class LobbyScreen(Screen):
         super(LobbyScreen, self).__init__(**kwargs)
 
         layout = FloatLayout()
+        bg = Image(source='img/bg.jpg')
         self.grid = BoxLayout(orientation='vertical',
                                 size_hint=(1, 0.9))
         label = Label(size_hint= (.6,.1),
@@ -29,6 +31,7 @@ class LobbyScreen(Screen):
                          text='Ajouter une partie',
                          on_press=self.add_game)
 
+        layout.add_widget(bg)
         layout.add_widget(self.grid)
         layout.add_widget(label)
         layout.add_widget(btn_refresh)

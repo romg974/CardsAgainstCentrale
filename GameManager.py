@@ -3,7 +3,7 @@ import time
 import requests
 
 class GameManager(threading.Thread):
-    api = 'http://localhost/CAC/'
+    api = 'https://rom.centrale-assos.fr/cac/'
 
     username = ''
     userkey = ''
@@ -13,6 +13,7 @@ class GameManager(threading.Thread):
     running = True
     action = None
     callback = None
+    lastgamecall = 0
 
     ACTION_PING = 0
     ACTION_LOGIN = 1
@@ -78,16 +79,21 @@ class GameManager(threading.Thread):
             else:
                 self.callback(False)
         elif self.action in [self.ACTION_GAME, self.ACTION_PLAY, self.ACTION_VOTE]:
+            if self.action == self.ACTION_GAME and time.time() - self.lastgamecall < 2:
+                return
             if self.action == self.ACTION_GAME:
                 result = self.request('game')
             else:
                 result = self.request('game', {'card': self.card})
+                self.action = self.ACTION_GAME
             if result != False:
                 self.callback(True, result)
             else:
                 self.callback(False)
+            self.lastgamecall = time.time()
 
-        if actiondebut == self.action:
+
+        if actiondebut == self.action and self.action != self.ACTION_GAME:
             self.action = None
 
     def ping(self, callback):

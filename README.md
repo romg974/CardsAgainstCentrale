@@ -5,7 +5,7 @@ Remake du célèbre jeu Cards Against Humanity, ou de ses versions françaises L
 <br>
 L'application est dévelopée en Python 3 avec la bibliothèque Kivy. Il s'agit d'un projet de cours.
 
-Le jeu est jouable mais n'est pas terminé. Voir Todo plus bas pour les pistes d'améliorations. 
+Le jeu est (presque) jouable mais n'est pas terminé. Voir Todo plus bas pour les pistes d'améliorations. 
 
 Utilisation
 -----------
