@@ -5,6 +5,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.image import Image
 
 import time
 
@@ -18,6 +19,7 @@ class LoginScreen(Screen):
 
         # Draw widgets
         layout = FloatLayout()
+        fond = Image(source='img/cac.jpg')
         glayout = GridLayout(size_hint=(0.5,0.25),
                              pos_hint={'x': .25, 'y': .25},
                              rows=2,
@@ -33,6 +35,7 @@ class LoginScreen(Screen):
         glayout.add_widget(self.f_username)
         glayout.add_widget(self.label)
         glayout.add_widget(btn)
+        layout.add_widget(fond)
         layout.add_widget(glayout)
         self.add_widget(layout)
 

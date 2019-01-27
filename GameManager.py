@@ -8,6 +8,7 @@ class GameManager(threading.Thread):
     username = ''
     userkey = ''
     partie = ''
+    card = ''
     cards = []
     running = True
     action = None
@@ -31,10 +32,13 @@ class GameManager(threading.Thread):
     def request(self, uri='', payload=None):
         try:
             if payload != None:
+                print(payload)
                 r = requests.post(self.api + '?' + uri, data=payload, headers={'X-UK': self.userkey})
             else:
                 r = requests.get(self.api+'?'+uri, headers={'X-UK': self.userkey})
             if r.status_code != 200:
+                print(r.text)
+
                 return False
             else:
                 print(r.text)
@@ -62,13 +66,24 @@ class GameManager(threading.Thread):
                 self.callback(True, result['games'])
             else:
                 self.callback(False)
-        elif self.action == self.ACTION_CREATE:
-            result = self.request('create', {'name': self.partie})
+        elif self.action == self.ACTION_CREATE or self.action == self.ACTION_JOIN:
+            if self.action == self.ACTION_CREATE: act = 'create'
+            else: act = 'join'
+            result = self.request(act, {'name': self.partie})
             if result != False:
                 if result['ok']:
                     self.callback(True)
                 else:
                     self.callback(False, result['message'])
+            else:
+                self.callback(False)
+        elif self.action in [self.ACTION_GAME, self.ACTION_PLAY, self.ACTION_VOTE]:
+            if self.action == self.ACTION_GAME:
+                result = self.request('game')
+            else:
+                result = self.request('game', {'card': self.card})
+            if result != False:
+                self.callback(True, result)
             else:
                 self.callback(False)
 
@@ -97,6 +112,16 @@ class GameManager(threading.Thread):
         self.callback = callback
         self.partie = name
         self.action = self.ACTION_JOIN
+
+    def play(self, callback, card):
+        self.callback = callback
+        self.card = card
+        self.action = self.ACTION_PLAY
+
+    def vote(self, callback, card):
+        self.callback = callback
+        self.card = card
+        self.action = self.ACTION_VOTE
 
     def game(self, callback):
         self.callback = callback

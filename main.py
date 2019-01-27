@@ -9,6 +9,9 @@ from PlayScreen import *
 
 from GameManager import GameManager
 
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)
+
 # Screen manager, used to manage screen switchs
 class Manager(ScreenManager):
 

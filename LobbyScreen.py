@@ -37,18 +37,21 @@ class LobbyScreen(Screen):
         self.add_widget(layout)
         self.popup = None
 
+    def join_game_callback(self, ok, message=''):
+        if ok:
+            self.manager.current = 'play'
+        else:
+            Popup(title='Erreur !',
+                  content=Label(text=message),
+                  size_hint=(None, None), size=(400, 400)).open()
 
     def join_game(self, btn):
-        self.manager.gm.partie = btn.text
-        self.manager.current = 'play'
-
-    def add_game_callback(self, ok, message=''):
-        if ok:
-            self.fetch_games()
+        name = btn.text
+        self.manager.gm.joinGame(self.join_game_callback, name)
 
     def add_game_action(self, e=None):
         name = self.add_game_input.text
-        self.manager.gm.createGame(self.add_game_callback, name)
+        self.manager.gm.createGame(self.join_game_callback, name)
 
     def add_game(self, e=None):
         def add_game(e):
